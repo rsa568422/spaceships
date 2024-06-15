@@ -32,18 +32,18 @@ public class SpaceshipController {
     }
 
     @GetMapping("/{id}")
-    public Spaceship findById(@PathVariable Integer id) {
+    public Spaceship findById(@PathVariable("id") Integer id) {
         return service.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("SpaceshipService::findById -> spaceship not found"));
     }
 
     @GetMapping("/name/{name}")
-    public Iterable<Spaceship> findByNameLike(@PathVariable String name) {
+    public Iterable<Spaceship> findByNameLike(@PathVariable("name") String name) {
         return service.findByNameLike(name);
     }
 
     @GetMapping("/recording/{name}")
-    public Iterable<Spaceship> findByRecordingNameLike(@PathVariable String name) {
+    public Iterable<Spaceship> findByRecordingNameLike(@PathVariable("name") String name) {
         return service.findByRecordingNameLike(name);
     }
 
@@ -64,7 +64,7 @@ public class SpaceshipController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Integer id) {
+    public void deleteById(@PathVariable("id") Integer id) {
         if (service.findById(id).isEmpty()) {
             throw new NoSuchElementException("SpaceshipService::deleteById -> spaceship not found");
         }

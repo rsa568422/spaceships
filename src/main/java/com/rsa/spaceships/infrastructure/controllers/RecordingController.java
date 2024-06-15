@@ -18,7 +18,7 @@ public class RecordingController {
     }
 
     @GetMapping("/{name}")
-    public Iterable<Recording> findBySpaceshipNameLike(@PathVariable String name) {
+    public Iterable<Recording> findBySpaceshipNameLike(@PathVariable("name") String name) {
         return service.findBySpaceshipNameLike(name);
     }
 }
