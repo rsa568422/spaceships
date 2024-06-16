@@ -30,6 +30,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ControllersIntegrationTest {
 
+    private static final String ROOT = "root";
+
     @Autowired
     private TestRestTemplate client;
 
@@ -42,7 +44,7 @@ class ControllersIntegrationTest {
         var expected = Data.EXPECTED_RECORDINGS.keySet().stream().map(Data::getExpectedRecording).toArray();
 
         var pathVariables = Map.of("name", "X-W");
-        var response = client.exchange(
+        var response = client.withBasicAuth(ROOT, ROOT).exchange(
                 getTestUri("/recording/{name}", port),
                 HttpMethod.GET,
                 null,
@@ -64,7 +66,7 @@ class ControllersIntegrationTest {
     void spaceshipControllerFindAll() {
         var expected = Data.EXPECTED_SPACESHIPS.keySet().stream().map(Data::getExpectedSpaceship).toArray();
 
-        var response = client.getForEntity(
+        var response = client.withBasicAuth(ROOT, ROOT).getForEntity(
                 getTestUri("/spaceship", port),
                 Spaceship[].class
         );
@@ -84,7 +86,7 @@ class ControllersIntegrationTest {
         var expected = Data.getExpectedSpaceship(1);
 
         var pathVariables = Map.of("id", 1);
-        var response = client.exchange(
+        var response = client.withBasicAuth(ROOT, ROOT).exchange(
                 getTestUri("/spaceship/{id}", port),
                 HttpMethod.GET,
                 null,
@@ -105,7 +107,7 @@ class ControllersIntegrationTest {
     @Order(4)
     void spaceshipControllerFindByIdKoNotFound() {
         var pathVariables = Map.of("id", -1);
-        var response = client.exchange(
+        var response = client.withBasicAuth(ROOT, ROOT).exchange(
                 getTestUri("/spaceship/{id}", port),
                 HttpMethod.GET,
                 null,
@@ -120,7 +122,7 @@ class ControllersIntegrationTest {
     @Order(5)
     void spaceshipControllerFindByNameLike() {
         var pathVariables = Map.of("name", "X-Wing");
-        var response = client.exchange(
+        var response = client.withBasicAuth(ROOT, ROOT).exchange(
                 getTestUri("/spaceship/name/{name}", port),
                 HttpMethod.GET,
                 null,
@@ -144,7 +146,7 @@ class ControllersIntegrationTest {
         var expected = Data.EXPECTED_SPACESHIPS.keySet().stream().map(Data::getExpectedSpaceship).toArray();
 
         var pathVariables = Map.of("name", "Star Wars: Episodio IV - Una nueva esperanza");
-        var response = client.exchange(
+        var response = client.withBasicAuth(ROOT, ROOT).exchange(
                 getTestUri("/spaceship/recording/{name}", port),
                 HttpMethod.GET,
                 null,
@@ -164,9 +166,9 @@ class ControllersIntegrationTest {
     @Test
     @Order(7)
     void spaceshipControllerCreate() {
-        var spaceship = new Spaceship(99, "another test");
+        var spaceship = new Spaceship(null, "another test");
 
-        var response = client.postForEntity(getTestUri("/spaceship", port), spaceship, Spaceship.class);
+        var response = client.withBasicAuth(ROOT, ROOT).postForEntity(getTestUri("/spaceship", port), spaceship, Spaceship.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(APPLICATION_JSON, response.getHeaders().getContentType());
@@ -188,7 +190,7 @@ class ControllersIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .body(spaceship);
 
-        var response = this.client.exchange(
+        var response = client.withBasicAuth(ROOT, ROOT).exchange(
                 getTestUri("/spaceship", port),
                 HttpMethod.PUT,
                 request,
@@ -217,7 +219,7 @@ class ControllersIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .body(spaceship);
 
-        var response = this.client.exchange(
+        var response = client.withBasicAuth(ROOT, ROOT).exchange(
                 getTestUri("/spaceship", port),
                 HttpMethod.PUT,
                 request,
@@ -237,7 +239,7 @@ class ControllersIntegrationTest {
                 new Recording(null, "test recording")
         );
 
-        var response = client.postForEntity(getTestUri("/appearance", port), appearance, Appearance.class);
+        var response = client.withBasicAuth(ROOT, ROOT).postForEntity(getTestUri("/appearance", port), appearance, Appearance.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(APPLICATION_JSON, response.getHeaders().getContentType());
@@ -258,7 +260,7 @@ class ControllersIntegrationTest {
     @Order(11)
     void spaceshipControllerDelete() {
         var pathVariables = Map.of("id", 7);
-        var response = this.client.exchange(
+        var response = client.withBasicAuth(ROOT, ROOT).exchange(
                 getTestUri("/spaceship/{id}", port),
                 HttpMethod.DELETE,
                 null,
@@ -273,7 +275,7 @@ class ControllersIntegrationTest {
     @Order(12)
     void spaceshipControllerDeleteKo() {
         var pathVariables = Map.of("id", 999);
-        var response = this.client.exchange(
+        var response = client.withBasicAuth(ROOT, ROOT).exchange(
                 getTestUri("/spaceship/{id}", port),
                 HttpMethod.DELETE,
                 null,

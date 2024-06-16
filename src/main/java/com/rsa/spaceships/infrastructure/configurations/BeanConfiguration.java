@@ -3,9 +3,11 @@ package com.rsa.spaceships.infrastructure.configurations;
 import com.rsa.spaceships.application.services.AppearanceService;
 import com.rsa.spaceships.application.services.RecordingService;
 import com.rsa.spaceships.application.services.SpaceshipService;
+import com.rsa.spaceships.application.services.UserService;
 import com.rsa.spaceships.domain.repositories.AppearanceRepository;
 import com.rsa.spaceships.domain.repositories.RecordingRepository;
 import com.rsa.spaceships.domain.repositories.SpaceshipRepository;
+import com.rsa.spaceships.domain.repositories.UserRepository;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +32,11 @@ public class BeanConfiguration {
     public SpaceshipService spaceshipService(AppearanceRepository appearanceRepository,
                                              SpaceshipRepository spaceshipRepository) {
         return new SpaceshipService(appearanceRepository, spaceshipRepository);
+    }
+
+    @Bean
+    public UserService userService(UserRepository userRepository) {
+        return new UserService(userRepository);
     }
 
     @Bean

@@ -1,3 +1,5 @@
+INSERT INTO users (username, password, role) VALUES ('root', 'root', 'ADMIN');
+
 INSERT INTO spaceships (name) VALUES ('X-Wing');
 INSERT INTO spaceships (name) VALUES ('Halcón Milenario');
 INSERT INTO spaceships (name) VALUES ('TIE Fighter');
