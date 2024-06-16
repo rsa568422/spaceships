@@ -20,9 +20,7 @@ import org.springframework.http.RequestEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -284,6 +282,25 @@ class ControllersIntegrationTest {
         );
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    @Order(13)
+    void spaceshipControllerCreateNotNullId() {
+        var spaceship = new Spaceship(99, "last test");
+
+        var response = client.postForEntity(getTestUri("/spaceship", port), spaceship, Spaceship.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(APPLICATION_JSON, response.getHeaders().getContentType());
+
+        var actual = response.getBody();
+
+        assertNotNull(actual);
+        assertNotNull(actual.getId());
+        assertNotEquals(99, actual.getId());
+        assertNotNull(actual.getName());
+        assertEquals("last test", actual.getName());
     }
 
     private static String getTestUri(String uri, int port) {
