@@ -5,10 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class RecordingMapperTest {
@@ -30,6 +27,11 @@ class RecordingMapperTest {
     }
 
     @Test
+    void nullToRecording() {
+        assertNull(mapper.toRecording(null));
+    }
+
+    @Test
     void toRecordings() {
         var entities = Data.EXPECTED_RECORDINGS.keySet().stream().map(Data::getExpectedRecordingEntity).toList();
         var expected = Data.EXPECTED_RECORDINGS.keySet().stream().map(Data::getExpectedRecording).toList();
@@ -43,6 +45,11 @@ class RecordingMapperTest {
     }
 
     @Test
+    void nullToRecordings() {
+        assertNull(mapper.toRecordings(null));
+    }
+
+    @Test
     void toRecordingEntity() {
         var recording = Data.getExpectedRecording(1);
         var expected = Data.getExpectedRecordingEntity(1);
@@ -53,5 +60,10 @@ class RecordingMapperTest {
                 () -> assertNotNull(actual),
                 () -> assertEquals(expected, actual)
         );
+    }
+
+    @Test
+    void nullToRecordingEntity() {
+        assertNull(mapper.toRecordingEntity(null));
     }
 }

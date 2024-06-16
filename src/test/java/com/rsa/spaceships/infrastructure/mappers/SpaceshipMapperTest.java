@@ -1,16 +1,14 @@
 package com.rsa.spaceships.infrastructure.mappers;
 
 import com.rsa.spaceships.Data;
+import com.rsa.spaceships.infrastructure.entities.SpaceshipEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class SpaceshipMapperTest {
@@ -32,6 +30,11 @@ class SpaceshipMapperTest {
     }
 
     @Test
+    void nullToSpaceship() {
+        assertNull(mapper.toSpaceship(null));
+    }
+
+    @Test
     void toSpaceshipsIterable() {
         var entities = Data.EXPECTED_SPACESHIPS.keySet().stream().map(Data::getExpectedSpaceshipEntity).toList();
         var expected = Data.EXPECTED_SPACESHIPS.keySet().stream().map(Data::getExpectedSpaceship).toList();
@@ -42,6 +45,11 @@ class SpaceshipMapperTest {
                 () -> assertNotNull(actual),
                 () -> assertIterableEquals(expected, actual)
         );
+    }
+
+    @Test
+    void nullToSpaceships() {
+        assertNull(mapper.toSpaceships((Iterable<SpaceshipEntity>) null));
     }
 
     @Test
@@ -68,5 +76,10 @@ class SpaceshipMapperTest {
                 () -> assertNotNull(actual),
                 () -> assertEquals(expected, actual)
         );
+    }
+
+    @Test
+    void nullToSpaceshipEntity() {
+        assertNull(mapper.toSpaceshipEntity(null));
     }
 }
