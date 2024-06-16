@@ -164,7 +164,7 @@ class ControllersIntegrationTest {
     @Test
     @Order(7)
     void spaceshipControllerCreate() {
-        var spaceship = new Spaceship(null, "another test");
+        var spaceship = new Spaceship(99, "another test");
 
         var response = client.postForEntity(getTestUri("/spaceship", port), spaceship, Spaceship.class);
 
@@ -210,6 +210,26 @@ class ControllersIntegrationTest {
 
     @Test
     @Order(9)
+    void spaceshipControllerUpdateKo() {
+        var spaceship = new Spaceship(99, "update test");
+        var request = RequestEntity
+                .put(getTestUri("/spaceship", port))
+                .accept(MediaType.APPLICATION_JSON)
+                .body(spaceship);
+
+        var response = this.client.exchange(
+                getTestUri("/spaceship", port),
+                HttpMethod.PUT,
+                request,
+                Spaceship.class,
+                new HashMap<>()
+        );
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    @Order(10)
     void appearanceControllerCreate() {
         var appearance = new Appearance(
                 null,
@@ -235,7 +255,7 @@ class ControllersIntegrationTest {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     void spaceshipControllerDelete() {
         var pathVariables = Map.of("id", 7);
         var response = this.client.exchange(
@@ -250,7 +270,7 @@ class ControllersIntegrationTest {
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     void spaceshipControllerDeleteKo() {
         var pathVariables = Map.of("id", 999);
         var response = this.client.exchange(
