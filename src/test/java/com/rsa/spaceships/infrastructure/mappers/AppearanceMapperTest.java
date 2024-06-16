@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class AppearanceMapperTest {
@@ -29,6 +27,11 @@ class AppearanceMapperTest {
                 () -> assertNotNull(actual),
                 () -> assertEquals(expected, actual)
         );
+    }
+
+    @Test
+    void nullToAppearance() {
+        assertNull(mapper.toAppearance(null));
     }
 
     @Test
@@ -51,6 +54,11 @@ class AppearanceMapperTest {
     }
 
     @Test
+    void nullToAppearances() {
+        assertNull(mapper.toAppearances(null));
+    }
+
+    @Test
     void toAppearanceEntity() {
         var appearance = new Appearance(1, Data.getExpectedSpaceship(1), Data.getExpectedRecording(1));
         var expected = toAppearanceEntity(1, Data.getExpectedSpaceshipEntity(1));
@@ -61,6 +69,11 @@ class AppearanceMapperTest {
                 () -> assertNotNull(actual),
                 () -> assertEquals(expected, actual)
         );
+    }
+
+    @Test
+    void nullToAppearanceEntity() {
+        assertNull(mapper.toAppearanceEntity(null));
     }
 
     private static AppearanceEntity toAppearanceEntity(Integer id, SpaceshipEntity spaceshipEntity) {
