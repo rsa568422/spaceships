@@ -1,6 +1,5 @@
 package com.rsa.spaceships.infrastructure.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rsa.spaceships.Data;
 import com.rsa.spaceships.domain.models.Appearance;
 import com.rsa.spaceships.domain.models.Recording;
@@ -211,7 +210,7 @@ class ControllersIntegrationTest {
 
     @Test
     @Order(9)
-    void appearanceControllerCreate() throws JsonProcessingException {
+    void appearanceControllerCreate() {
         var appearance = new Appearance(
                 null,
                 new Spaceship(null, "test spaceship"),
