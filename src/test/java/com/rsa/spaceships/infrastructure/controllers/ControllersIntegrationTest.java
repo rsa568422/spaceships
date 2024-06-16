@@ -289,7 +289,7 @@ class ControllersIntegrationTest {
     void spaceshipControllerCreateNotNullId() {
         var spaceship = new Spaceship(99, "last test");
 
-        var response = client.postForEntity(getTestUri("/spaceship", port), spaceship, Spaceship.class);
+        var response = client.withBasicAuth(ROOT, ROOT).postForEntity(getTestUri("/spaceship", port), spaceship, Spaceship.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(APPLICATION_JSON, response.getHeaders().getContentType());
